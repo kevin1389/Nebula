@@ -60,7 +60,7 @@ test('runtime assets honor the injected package base on non-CDN nested pages', (
 			'https://static.example/nebula/scram/scramjet.wasm'
 		);
 		assert.deepEqual(serviceWorkerLocation(page), {
-			script: 'https://static.example/nebula/sw.js',
+			script: 'https://static.example/nebula/app-core.js',
 			scope: '/nebula/'
 		});
 	} finally {

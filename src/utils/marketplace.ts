@@ -243,8 +243,8 @@ class Marketplace {
     async theme(opts: { type: 'normal', payload: string, sources?: { video?: string, bg?: string }, name: string } | { type: 'remove', payload?: string, sources?: { video?: string, bg?: string }, name?: string }) {
         const elems = Elements.select([
             { type: 'id', val: 'stylesheet' },
-            { type: 'id', val: 'nebulaVideo' },
-            { type: 'id', val: 'nebulaImage' }
+            { type: 'id', val: 'bgVideo' },
+            { type: 'id', val: 'bgImage' }
         ]);
         const s = Elements.exists<HTMLLinkElement>(await elems.next());
         const nv = Elements.exists<HTMLVideoElement>(await elems.next());
@@ -260,7 +260,7 @@ class Marketplace {
             if (style) {
                 await st.removeVal(SettingsVals.marketPlace.appearance.theme.name);
                 await st.removeVal(SettingsVals.marketPlace.appearance.theme.payload);
-                s.href = "/nebula.css";
+                s.href = "/styles.css";
             }
             await st.removeVal(SettingsVals.marketPlace.appearance.video);
             nv.src = "";

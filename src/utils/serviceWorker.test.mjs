@@ -5,7 +5,7 @@ import { SW } from './serviceWorker.ts';
 const base = 'https://cdn.jsdelivr.net/gh/TwiLabs/n4x8p1kd@fed5cf6/';
 
 class Worker extends EventTarget {
-	constructor(scriptURL = `${base}sw.js`, state = 'activated') {
+	constructor(scriptURL = `${base}app-core.js`, state = 'activated') {
 		super();
 		this.scriptURL = scriptURL;
 		this.state = state;
@@ -37,7 +37,7 @@ async function withBrowser(register, run) {
 			readyReads++;
 			return Promise.resolve(
 				registration(
-					new Worker('https://cdn.jsdelivr.net/sw.js'),
+					new Worker('https://cdn.jsdelivr.net/app-core.js'),
 					'https://cdn.jsdelivr.net/'
 				)
 			);
@@ -72,7 +72,7 @@ test('Scramjet receives the exact package registration, never a broader ready wo
 	const exact = registration(new Worker());
 	await withBrowser(
 		async (script, options) => {
-			assert.equal(script, `${base}sw.js`);
+			assert.equal(script, `${base}app-core.js`);
 			assert.deepEqual(options, { scope: new URL(base).pathname });
 			return exact;
 		},
@@ -86,7 +86,7 @@ test('Scramjet receives the exact package registration, never a broader ready wo
 });
 
 test('waits for the exact installing worker to activate', async () => {
-	const worker = new Worker(`${base}sw.js`, 'installing');
+	const worker = new Worker(`${base}app-core.js`, 'installing');
 	const exact = registration(null);
 	exact.installing = worker;
 	await withBrowser(
@@ -134,9 +134,9 @@ test('getSWInfo preserves asynchronously rejected registration errors', async ()
 });
 
 test('a wrong old active worker cannot win over the owned installing worker', async () => {
-	const worker = new Worker(`${base}sw.js`, 'installing');
+	const worker = new Worker(`${base}app-core.js`, 'installing');
 	const exact = registration(
-		new Worker('https://cdn.jsdelivr.net/old-sw.js')
+		new Worker('https://cdn.jsdelivr.net/old-app-core.js')
 	);
 	exact.installing = worker;
 	await withBrowser(
@@ -156,7 +156,7 @@ test('a wrong old active worker cannot win over the owned installing worker', as
 });
 
 test('getSWInfo rejects a worker that becomes redundant', async () => {
-	const worker = new Worker(`${base}sw.js`, 'installing');
+	const worker = new Worker(`${base}app-core.js`, 'installing');
 	const exact = registration(null);
 	exact.installing = worker;
 	await withBrowser(
@@ -174,7 +174,7 @@ test('getSWInfo rejects a worker that becomes redundant', async () => {
 for (const phase of ['registration', 'activation']) {
 	test(`getSWInfo bounds stalled ${phase} with a timeout`, async () => {
 		const exact = registration(null);
-		exact.waiting = new Worker(`${base}sw.js`, 'installed');
+		exact.waiting = new Worker(`${base}app-core.js`, 'installed');
 		await withBrowser(
 			phase === 'registration'
 				? () => new Promise(() => {})
@@ -192,8 +192,8 @@ for (const mismatch of ['scope', 'script']) {
 		const exact = registration(
 			new Worker(
 				mismatch === 'script'
-					? 'https://cdn.jsdelivr.net/sw.js'
-					: `${base}sw.js`
+					? 'https://cdn.jsdelivr.net/app-core.js'
+					: `${base}app-core.js`
 			),
 			mismatch === 'scope' ? 'https://cdn.jsdelivr.net/' : base
 		);
@@ -215,7 +215,7 @@ test('revalidates the active worker immediately before supplying it to Scramjet'
 			const sw = new SW({ timeoutMs: 100 });
 			await sw.getSWInfo();
 			assert.equal(sw.getActiveWorker(), exact.active);
-			exact.active = new Worker('https://cdn.jsdelivr.net/sw.js');
+			exact.active = new Worker('https://cdn.jsdelivr.net/app-core.js');
 			assert.throws(() => sw.getActiveWorker(), /ownership/);
 		}
 	);
