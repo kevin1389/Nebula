@@ -15,7 +15,7 @@ const t = useTranslations(lang);
 import { MARKETPLACE_ENABLED } from "astro:env/client";
 ---
 
-<Layout title="Settings">
+<Layout title="Preferences">
   <SettingsLayout title={t("settings.proxy")}>
     <SettingsSection
       title="Proxy"
@@ -101,14 +101,14 @@ import { MARKETPLACE_ENABLED } from "astro:env/client";
           <div class="flex flex-row gap-6 justify-center md:justify-normal">
             <InstalledPlugins />
             <a
-              href={`/${lang}/catalog/?page=1`}
+              href={`/${lang}/service/?page=1`}
               class="rounded-3xl bg-navbar-color w-64 flex flex-col"
             >
               <div class="w-full items-center justify-center flex aspect-[16/9]">
                 <Icon name="ph:plus-bold" class="h-16 w-16" />
               </div>
               <div class="h-2/6 text-center content-center p-3 font-semibold">
-                Get more plugins in the <strong>Nebula Catalog!</strong>
+                Get more plugins in the <strong>Resource Library!</strong>
               </div>
             </a>
           </div>

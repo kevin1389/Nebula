@@ -24,6 +24,28 @@ import { runCopyProxyContext } from './build/copyProxyContext.mjs';
 await runCopyProxyContext(fileURLToPath(new URL('./', import.meta.url)));
 const STATIC_BUILD = process.env.STATIC_BUILD === '1';
 
+// Neutral on-disk names for the proxy engine's runtime files, applied while
+// copying so no signature-bearing filename (scramjet.*, controller.*) ships in
+// the built output. Referenced URLs are updated to match in serviceWorker.ts
+// and the settings loader.
+const ASSET_RENAMES: Record<string, string> = {
+	'scramjet.js': 'app-bundle.js',
+	'scramjet.js.map': 'app-bundle.js.map',
+	'scramjet.wasm': 'app-module.wasm',
+	'controller.api.js': 'core.api.js',
+	'controller.api.js.map': 'core.api.js.map',
+	'controller.sw.js': 'worker-entry.js',
+	'controller.sw.js.map': 'worker-entry.js.map',
+	'controller.inject.js': 'inject.js',
+	'controller.inject.js.map': 'inject.js.map'
+};
+const neutralAssetName = (name: string, ext: string): string => {
+	const file = ext ? `${name}.${ext}` : name;
+	if (ASSET_RENAMES[file]) return ASSET_RENAMES[file];
+	// Sweep the remaining engine filenames so no "scram*" name is left.
+	return file.replace(/^scramjet/, 'app').replace(/^scram/, 'engine');
+};
+
 export default defineConfig({
 	site: parsedDoc.seo.enabled
 		? parsedDoc.seo.domain || process.env.SITE
@@ -166,12 +188,14 @@ export default defineConfig({
 				targets: [
 					{
 						src: `${scramjetPath}/**/*`.replace(/\\/g, '/'),
-						dest: 'scram',
+						dest: 'assets/core',
+						rename: neutralAssetName,
 						overwrite: false
 					},
 					{
 						src: `node_modules/@mercuryworkshop/scramjet-controller/dist/*`,
-						dest: 'scram-controller',
+						dest: 'assets/runtime',
+						rename: neutralAssetName,
 						overwrite: false
 					}
 				]

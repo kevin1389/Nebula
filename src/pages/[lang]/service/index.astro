@@ -5,17 +5,16 @@ export const getStaticPaths = () => STATIC_PATHS;
 const lang = getLangFromUrl(Astro.url);
 ---
 
-<Layout title="Catalog">
+<Layout title="Resource Library">
   <div
     class="flex mt-16 w-full fixed inset-0 h-[calc(100%-4rem)] z-0 bg-primary flex-col items-center overflow-auto font-roboto"
   >
     <div
       class="w-full flex flex-col gap-4 justify-center items-center text-text-color mt-9"
     >
-      <h1 class="text-3xl md:text-5xl font-bold">Nebula Catalog</h1>
+      <h1 class="text-3xl md:text-5xl font-bold">Resource Library</h1>
       <p class="text-l md:text-xl max-md:text-center max-md:p-2">
-        The Nebula Catalog is a place for you to find user-created themes and
-        plugins.
+        A collection of user-created themes and plugins.
       </p>
     </div>
     <div
@@ -76,7 +75,7 @@ const lang = getLangFromUrl(Astro.url);
               `<p class="bg-navbar-text-color text-navbar-color font-bold px-3 py-1 rounded-md text-center">${esc(t)}</p>`,
           )
           .join("");
-        return `<a href="/${esc(lang)}/catalog/package/?pkg=${encodeURIComponent(pName)}">
+        return `<a href="/${esc(lang)}/service/v1/?pkg=${encodeURIComponent(pName)}">
           <div class="bg-navbar-color w-64 rounded-3xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 text-text-color">
             <img data-catalog-src="${esc(`/packages/${pName}/${a.image}`)}" alt="${esc(a.title)}" class="w-full h-40 object-cover bg-navbar-text-color/10" />
             <div class="p-6 text-sm">
@@ -98,7 +97,7 @@ const lang = getLangFromUrl(Astro.url);
   const renderPagination = (lang: string, page: number, pages: number) => {
     const root = document.getElementById("catalog-pagination")!;
     const link = (n: number, label: string, active = false) =>
-      `<a href="/${esc(lang)}/catalog/?page=${n}" class="w-8 h-8 ${active ? "bg-lighter" : "bg-navbar-color"} items-center text-center content-center text-text-color rounded-md">${esc(label)}</a>`;
+      `<a href="/${esc(lang)}/service/?page=${n}" class="w-8 h-8 ${active ? "bg-lighter" : "bg-navbar-color"} items-center text-center content-center text-text-color rounded-md">${esc(label)}</a>`;
     const parts: string[] = [];
     if (page > 2) parts.push(link(1, "1"));
     if (page - 1 > 0) parts.push(link(page - 1, String(page - 1)));

@@ -43,6 +43,26 @@ await app.register(fastifyHelmet, {
     contentSecurityPolicy: false //Disabled because astro DOES NOT LIKE IT
 });
 
+// Strip anything that advertises proxying from our own responses. The engine
+// already removes remote CSP/frame headers on proxied documents, so this only
+// guards what Fastify (or a plugin) emits; a filter reading response headers
+// sees ordinary browser headers and nothing else.
+const PROXY_TELL_HEADERS = [
+    "via",
+    "x-powered-by",
+    "proxy-connection",
+    "x-forwarded-for",
+    "x-forwarded-host",
+    "x-forwarded-proto",
+    "x-real-ip",
+    "x-proxy",
+    "x-proxy-token"
+];
+app.addHook("onSend", async (_request, reply, payload) => {
+    for (const header of PROXY_TELL_HEADERS) reply.removeHeader(header);
+    return payload;
+});
+
 if (parsedDoc.masqr.enabled) {
     await app.register(masqr, {
         deniedFilePath: parsedDoc.masqr.failed,

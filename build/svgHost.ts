@@ -35,9 +35,9 @@ function routeSvgHtml(
 		''
 	);
 	html = html.replace(
-		/\bsrc=(['"])\/loading\/?(\?[^'"#]*)?(#[^'"]*)?\1/gi,
+		/\bsrc=(['"])\/service\/?(\?[^'"#]*)?(#[^'"]*)?\1/gi,
 		(_all, quote: string, query = '', hash = '') =>
-			`src=${quote}/loading/index.html${query}${hash}${quote}`
+			`src=${quote}/service/index.html${query}${hash}${quote}`
 	);
 	const sourceUrl = new URL(
 		htmlPath.split(sep).join('/'),

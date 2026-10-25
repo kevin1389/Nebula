@@ -11,7 +11,7 @@ const t = useTranslations(lang);
 import { MARKETPLACE_ENABLED } from "astro:env/client";
 ---
 
-<Layout title="Settings">
+<Layout title="Preferences">
   <SettingsLayout title={t("settings.appearance")}>
     <SettingsSection
       title="Theme"
@@ -20,12 +20,12 @@ import { MARKETPLACE_ENABLED } from "astro:env/client";
         <div class="justify-center flex flex-row gap-6 flex-wrap md:justify-normal">
             <InstalledThemes />
           {MARKETPLACE_ENABLED && 
-            <a href={`/${lang}/catalog/?page=1`} class="rounded-3xl bg-navbar-color w-64 flex flex-col">
+            <a href={`/${lang}/service/?page=1`} class="rounded-3xl bg-navbar-color w-64 flex flex-col">
                 <div class="w-full items-center justify-center flex aspect-[16/9]">
                     <Icon name="ph:plus-bold" class="h-16 w-16" />
                 </div>
                 <div class="h-2/6 text-center content-center p-3 font-semibold">
-                    Get more themes in the <strong>Nebula Catalog!</strong>
+                    Get more themes in the <strong>Resource Library!</strong>
                 </div>
             </a>
           }

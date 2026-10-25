@@ -1,4 +1,4 @@
-importScripts('./scram-controller/controller.sw.js');
+importScripts('./assets/runtime/worker-entry.js');
 importScripts('./marketplace-config.js');
 
 self.addEventListener('install', () => self.skipWaiting());
@@ -18,7 +18,7 @@ function isPackageHtml(request) {
 	if (url.origin !== scope.origin || !url.pathname.startsWith(scope.pathname))
 		return false;
 	const path = url.pathname.slice(scope.pathname.length);
-	return /^(?:index\.html|(?:loading|en_US|jp)\/(?:[\w-]+\/)*index\.html)$/.test(
+	return /^(?:index\.html|(?:service|en_US|jp)\/(?:[\w-]+\/)*index\.html)$/.test(
 		path
 	);
 }

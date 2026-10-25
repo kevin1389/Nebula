@@ -6,7 +6,7 @@ import { staticAssetLocation } from './staticAssetLocation';
  * Creates a script element and returns it for usage or more modification.
  *
  * @example
- * const script = createScript("/scram/scramjet.controller.js", true);
+ * const script = createScript("/assets/runtime/core.api.js", true);
  * document.body.appendChild(script);
  */
 const createScript = (src: string, defer?: boolean): HTMLScriptElement => {
@@ -30,7 +30,7 @@ function* createProxyScripts() {
 	).__ddxBase;
 	const sj = createScript(
 		staticAssetLocation(
-			'/scram/scramjet.js',
+			'/assets/core/app-bundle.js',
 			location.href,
 			standaloneBase
 		),
@@ -39,7 +39,7 @@ function* createProxyScripts() {
 	yield sj;
 	const sjController = createScript(
 		staticAssetLocation(
-			'/scram-controller/controller.api.js',
+			'/assets/runtime/core.api.js',
 			location.href,
 			standaloneBase
 		),

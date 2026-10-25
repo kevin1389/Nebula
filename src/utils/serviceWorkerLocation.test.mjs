@@ -9,7 +9,7 @@ test('uses package-relative worker and scope for standalone SVG URLs', () => {
 			'https://cdn.jsdelivr.net/gh/TwiLabs/n4x8p1kd@main/index.svg'
 		),
 		{
-			script: 'https://cdn.jsdelivr.net/gh/TwiLabs/n4x8p1kd@main/sw.js',
+			script: 'https://cdn.jsdelivr.net/gh/TwiLabs/n4x8p1kd@main/app-core.js',
 			scope: '/gh/TwiLabs/n4x8p1kd@main/'
 		}
 	);
@@ -17,7 +17,7 @@ test('uses package-relative worker and scope for standalone SVG URLs', () => {
 
 test('keeps the root worker scope for regular localized pages', () => {
 	assert.deepEqual(serviceWorkerLocation('https://nebulaproxy.io/en_US/'), {
-		script: 'https://nebulaproxy.io/sw.js',
+		script: 'https://nebulaproxy.io/app-core.js',
 		scope: '/'
 	});
 });
@@ -29,7 +29,7 @@ test("retains standalone package scope while the app's visible route is non-SVG"
 			'https://cdn.jsdelivr.net/gh/TwiLabs/n4x8p1kd@main/'
 		),
 		{
-			script: 'https://cdn.jsdelivr.net/gh/TwiLabs/n4x8p1kd@main/sw.js',
+			script: 'https://cdn.jsdelivr.net/gh/TwiLabs/n4x8p1kd@main/app-core.js',
 			scope: '/gh/TwiLabs/n4x8p1kd@main/'
 		}
 	);
@@ -41,7 +41,7 @@ test('nested jsDelivr SVGs register the worker at the repository root', () => {
 			'https://cdn.jsdelivr.net/gh/TwiLabs/n4x8p1kd@0b8b6fb/en_US/games/index.svg?x=1#route'
 		),
 		{
-			script: 'https://cdn.jsdelivr.net/gh/TwiLabs/n4x8p1kd@0b8b6fb/sw.js',
+			script: 'https://cdn.jsdelivr.net/gh/TwiLabs/n4x8p1kd@0b8b6fb/app-core.js',
 			scope: '/gh/TwiLabs/n4x8p1kd@0b8b6fb/'
 		}
 	);
@@ -53,7 +53,7 @@ test('jsDelivr HTML routes recover the package root without an injected base', (
 			'https://cdn.jsdelivr.net/gh/TwiLabs/n4x8p1kd@0b8b6fb/loading/'
 		),
 		{
-			script: 'https://cdn.jsdelivr.net/gh/TwiLabs/n4x8p1kd@0b8b6fb/sw.js',
+			script: 'https://cdn.jsdelivr.net/gh/TwiLabs/n4x8p1kd@0b8b6fb/app-core.js',
 			scope: '/gh/TwiLabs/n4x8p1kd@0b8b6fb/'
 		}
 	);

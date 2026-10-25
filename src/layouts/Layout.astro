@@ -50,27 +50,27 @@ const Host = Astro.url.host;
     <script is:inline src="/ob-fonts.js"></script>
     <SEO
         title={title},
-        titleTemplate={SEOConfig.enabled && Host === SEOConfig.domain  ? 'Nebula | %s': '%s'},
-        titleDefault={SEOConfig.enabled && Host === SEOConfig.domain ? 'Nebula': ''},
-        description={SEOConfig.enabled && Host === SEOConfig.domain ? description ? description : 'A stunning and sleek web proxy with support for hundreds of popular sites.' : ''},
+        titleTemplate={SEOConfig.enabled && Host === SEOConfig.domain  ? 'Documentation Viewer | %s': '%s'},
+        titleDefault={SEOConfig.enabled && Host === SEOConfig.domain ? 'Documentation Viewer': ''},
+        description={SEOConfig.enabled && Host === SEOConfig.domain ? description ? description : 'Course notes, reference material, and study resources.' : ''},
         charset="UTF-8",
         openGraph={{
             basic: {
-                title: SEOConfig.enabled && Host === SEOConfig.domain ? 'Nebula' :'',
+                title: SEOConfig.enabled && Host === SEOConfig.domain ? 'Documentation Viewer' :'',
                 type: 'website',
-                url: SEOConfig.enabled && Host === SEOConfig.domain ? 'https://nebulaservices.org' : '',
-                image: SEOConfig.enabled && Host === SEOConfig.domain ? image ? image : '/logo.png': ''
+                url: SEOConfig.enabled && Host === SEOConfig.domain ? '' : '',
+                image: SEOConfig.enabled && Host === SEOConfig.domain ? image ? image : '/favicon.svg': ''
             },
             optional: {
-                description: SEOConfig.enabled && Host === SEOConfig.domain ? description ? description : 'A stunning and sleek web proxy with support for hundreds of popular sites.' : ''
+                description: SEOConfig.enabled && Host === SEOConfig.domain ? description ? description : 'Course notes, reference material, and study resources.' : ''
             }
         }},
         twitter={{
             card: "summary_large_image",
-            title: SEOConfig.enabled && Host === SEOConfig.domain ? 'Nebula' : '',
-            description: SEOConfig.enabled && Host === SEOConfig.domain ? description ? description : 'A stunning and sleek web proxy with support for hundreds of popular sites.' : '',
-            image: SEOConfig.enabled && Host === SEOConfig.domain ? image ? image : '/logo.png': '',
-            imageAlt: image ? 'Catalog image' : `${SEOConfig.enabled && Host === SEOConfig.domain && "Nebula services's"} logo`
+            title: SEOConfig.enabled && Host === SEOConfig.domain ? 'Documentation Viewer' : '',
+            description: SEOConfig.enabled && Host === SEOConfig.domain ? description ? description : 'Course notes, reference material, and study resources.' : '',
+            image: SEOConfig.enabled && Host === SEOConfig.domain ? image ? image : '/favicon.svg': '',
+            imageAlt: image ? 'Catalog image' : `${SEOConfig.enabled && Host === SEOConfig.domain && "Site"} logo`
         }},
         extend={{
             link: [
@@ -91,15 +91,14 @@ const Host = Astro.url.host;
                 }
             ],
             meta: [
-                { name: 'viewport', content: 'width=device-width, initial-scale=1.0' },
-                { name: 'generator', content: `${Astro.generator}` }
+                { name: 'viewport', content: 'width=device-width, initial-scale=1.0' }
             ]
         }}
         />
     {/* I left this out of the SEO component as we need it to persist properly : D */}
     <link
       rel="stylesheet"
-      href="/nebula.css"
+      href="/styles.css"
       id="stylesheet"
       transition:persist
     />
@@ -117,7 +116,7 @@ const Host = Astro.url.host;
       autoplay
       muted
       loop
-      id="nebulaVideo"
+      id="bgVideo"
       class="absolute z-0 h-[calc(100%-4rem)] w-full object-cover"
       transition:persist
     >
@@ -126,7 +125,7 @@ const Host = Astro.url.host;
     <img
       src=""
       class="absolute z-0 h-[calc(100%-4rem)] w-full object-cover hidden"
-      id="nebulaImage"
+      id="bgImage"
       transition:persist
     /> 
     <style is:global>

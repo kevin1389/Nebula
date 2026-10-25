@@ -4,13 +4,13 @@ import test from 'node:test';
 import vm from 'node:vm';
 
 const workerSource = await readFile(
-	new URL('../../public/sw.js', import.meta.url),
+	new URL('../../public/app-core.js', import.meta.url),
 	'utf8'
 );
 
 test('static worker imports its bundled scripts relative to the package directory', () => {
 	assert.deepEqual(createWorker().imports, [
-		'./scram-controller/controller.sw.js',
+		'./assets/runtime/worker-entry.js',
 		'./marketplace-config.js'
 	]);
 });
@@ -122,7 +122,7 @@ test('package HTML is rehosted with HTML MIME without intercepting proxy or rang
 	const scope = 'https://cdn.jsdelivr.net/gh/TwiLabs/nebula@candidate/';
 	const fetched = [];
 	const self = {
-		location: new URL(scope + 'sw.js'),
+		location: new URL(scope + 'app-core.js'),
 		registration: { scope },
 		addEventListener(type, handler) {
 			handlers[type] = handler;
@@ -153,7 +153,7 @@ test('package HTML is rehosted with HTML MIME without intercepting proxy or rang
 		});
 		return result;
 	}
-	const response = await request(scope + 'loading/index.html');
+	const response = await request(scope + 'service/index.html');
 	assert.ok(response, 'worker handles package loading HTML');
 	assert.equal(
 		response.headers.get('content-type'),
@@ -165,13 +165,13 @@ test('package HTML is rehosted with HTML MIME without intercepting proxy or rang
 		undefined
 	);
 	assert.equal(
-		await request(scope + 'loading/index.html', {
+		await request(scope + 'service/index.html', {
 			headers: { range: 'bytes=0-3' }
 		}),
 		undefined
 	);
 	assert.equal(
-		await request('https://cdn.jsdelivr.net/loading/index.html'),
+		await request('https://cdn.jsdelivr.net/service/index.html'),
 		undefined
 	);
 	assert.equal(fetched.length, 1);

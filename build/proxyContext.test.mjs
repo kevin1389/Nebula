@@ -22,7 +22,7 @@ test('Nebula adapter uses explicitly copied real bundle and actual response pipe
 });
 
 test('games keeps localized paths, drops Truffled, and exposes configuration errors', () => {
-  const source = readFileSync('src/pages/[lang]/games.astro', 'utf8');
+  const source = readFileSync('src/pages/[lang]/app.astro', 'utf8');
   assert.ok(source.includes('getStaticPaths = () => STATIC_PATHS'));
   assert.ok(!source.includes('truffled.lol'));
   assert.ok(source.includes('SPACE_ORIGIN'));

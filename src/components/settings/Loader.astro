@@ -9,6 +9,7 @@
     import { Marketplace } from "@utils/marketplace";
     import { installMarketplaceBridge } from "@utils/marketplaceBridge";
     import { installProxyContext } from "@utils/proxyContext";
+    import { installHistoryCompat } from "@utils/historyCompat";
     import { CATALOG_ORIGIN, STATIC_MARKETPLACE } from "astro:env/client";
     import { BareCompatibleClient, type ProxyTransport } from "@mercuryworkshop/proxy-transports";
     import LibcurlClient from "@mercuryworkshop/libcurl-transport";
@@ -87,9 +88,12 @@
           serviceworker: sw.getActiveWorker(),
           transport: transport,
           config: {
-            scramjetPath: staticAssetLocation("/scram/scramjet.js", location.href),
-            injectPath: staticAssetLocation("/scram-controller/controller.inject.js", location.href),
-            wasmPath: staticAssetLocation("/scram/scramjet.wasm", location.href),
+            scramjetPath: staticAssetLocation("/assets/core/app-bundle.js", location.href),
+            injectPath: staticAssetLocation("/assets/runtime/inject.js", location.href),
+            wasmPath: staticAssetLocation("/assets/core/app-module.wasm", location.href),
+            // Served by the controller from the rewrite prefix. Neutral name so
+            // no proxied document requests a "scramjet*" URL.
+            virtualWasmPath: "runtime.bin",
             // Custom rewrite prefix (was the default "/~/sj/" — a scramjet
             // fingerprint). The SW learns this via the controller's
             // registration message, so routing stays in sync.
@@ -129,9 +133,17 @@
                 return new TextDecoder().decode(new Uint8Array(bytes));
               },
             },
-          }
+          },
+          // Hide the engine's own asset names from resource timing and stacks.
+          scramjetConfig: {
+            maskedfiles: ["inject.js", "runtime.bin", "app-bundle.js", "app-module.wasm"],
+          },
         });
         installProxyContext(window.controller);
+        // Scramjet 2.0.67-alpha.2 stringifies the optional pushState/replaceState
+        // URL, turning "no URL change" into a literal /undefined route. Wrap its
+        // History patches so SPA route changes keep the remote pathname.
+        installHistoryCompat(window.controller);
         log({ type: 'info', bg: true, prefix: true }, `General init completed! \n\nServiceWorker: ${serviceWorker.active?.state}`);
         return mp;
     }
